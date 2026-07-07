@@ -1,0 +1,39 @@
+@model IEnumerable<HealthcareDashboard.Models.Provider> 
+@{
+    ViewData["Title"] = "Provider Directory";
+}
+
+<div class="container mt-4">
+    <h2>Provider Directory</h2>
+
+    <p>A complete list of active healthcare providers in the network.</p>
+
+    <a asp-action="Create" class="btn btn-success mb-3">Add New Provider</a>
+
+    <table class="table table-striped table-hover mt-3">
+        <header class="table-dark">
+            <tr>
+                <th>NPI Number</th>
+                <th>Provider Name</th>
+                <th>Specialty</th>
+                <th>Phone Number</th> <th>Actions</th>      </tr>
+        </header>
+        <tbody>
+            @foreach (var provider in Model)
+            {
+                <tr>
+                    <td>@provider.NpiNumber</td>
+                    <td>@provider.FullName</td> 
+                    <td>@provider.Specialty</td>
+                    
+                    <td>@(provider.PhoneNumber ?? "No number on file")</td> 
+                    
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@provider.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@provider.Id" class="btn btn-sm btn-outline-danger ms-1">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

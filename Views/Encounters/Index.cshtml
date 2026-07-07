@@ -1,0 +1,36 @@
+@model IEnumerable<HealthcareDashboard.Models.Encounter>
+
+@{
+    ViewData["Title"] = "Encounter Schedule";
+}
+
+<div class="container mt-4">
+    <h2>Encounter Schedule</h2>
+    <p>A comprehensive view of all patient visits and appointments.</p>
+    <a asp-action="Create" class="btn btn-success mb-3">Log New Encounter</a>
+
+    <table class="table table-striped table-hover mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Date & Time</th>
+                <th>Provider</th>
+                <th>Patient</th>
+                <th>Chief Complaint</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var encounter in Model)
+            {
+                <tr>
+                    <td>@encounter.EncounterDate.ToString("MMM dd, yyyy h:mm tt")</td>
+                    
+                    <td>@encounter.Provider.FullName</td>
+                    
+                    <td>@encounter.Patient.FullName</td>
+                    
+                    <td>@(encounter.ChiefComplaint ?? "No complaint recorded")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

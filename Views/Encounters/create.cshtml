@@ -1,0 +1,50 @@
+@model HealthcareDashboard.Models.Encounter
+
+@{
+    ViewData["Title"] = "Log Encounter";
+}
+
+<div class="container mt-4">
+    <h2>Log Patient Encounter</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="EncounterDate" class="control-label">Date and Time</label>
+                    <input asp-for="EncounterDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="EncounterDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProviderId" class="control-label">Attending Provider</label>
+                    <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.ProviderId">
+                        <option value="">-- Select a Provider --</option>
+                    </select>
+                    <span asp-validation-for="ProviderId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="PatientId" class="control-label">Patient</label>
+                    <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId">
+                        <option value="">-- Select a Patient --</option>
+                    </select>
+                    <span asp-validation-for="PatientId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ChiefComplaint" class="control-label">Chief Complaint / Reason for Visit</label>
+                    <textarea asp-for="ChiefComplaint" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="ChiefComplaint" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <input type="submit" value="Save Encounter" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+/* --- Enterprise Healthcare Theme Variables --- */
+:root {
+  --corporate-navy: #003882; /* Deep, trustworthy blue typical of major health networks */
+  --corporate-blue-light: #0056b3;
+  --bg-light-gray: #f4f6f9; /* Soft background so white data cards stand out */
+  --text-dark: #333333;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  background-color: var(--bg-light-gray);
+  color: var(--text-dark);
+  margin-bottom: 60px; /* Accounts for the fixed footer */
+}
+
+/* --- Custom Navigation Bar --- */
+.custom-navbar {
+  background-color: var(--corporate-navy) !important;
+}
+
+.custom-navbar .navbar-brand {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ffffff !important;
+}
+
+.custom-navbar .nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+  color: #ffffff !important;
+  /* border-bottom removed so the text just gently turns white without the line */
+}
+
+/* --- Global Overrides --- */
+a {
+  color: var(--corporate-blue-light);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--corporate-navy);
+  text-decoration: underline;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: var(--corporate-navy);
+  border-color: var(--corporate-navy);
+}
+
+.btn-primary:hover {
+  background-color: #00285e;
+  border-color: #00285e;
+}
+
+.box-shadow {
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.08);
+}
+
+/* --- Footer --- */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e5e5;
+}

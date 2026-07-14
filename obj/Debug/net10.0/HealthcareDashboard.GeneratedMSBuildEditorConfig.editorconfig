@@ -35,6 +35,18 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW5jb3VudGVycy9jcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Encounters/delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW5jb3VudGVycy9kZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Encounters/details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW5jb3VudGVycy9kZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Encounters/edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW5jb3VudGVycy9lZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Encounters/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW5jb3VudGVycy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -51,6 +63,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF0aWVudHMvY3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Patients/delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF0aWVudHMvZGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Patients/details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF0aWVudHMvZGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Patients/edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF0aWVudHMvZWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Patients/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF0aWVudHMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -61,6 +85,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Providers/delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvdmlkZXJzL2RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Providers/details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvdmlkZXJzL2RldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/Views/Providers/edit.cshtml]

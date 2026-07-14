@@ -1,15 +1,19 @@
+@* This view displays a list of all patient encounters. *@
 @model IEnumerable<HealthcareDashboard.Models.Encounter>
 
 @{
+    // Set the page title.
     ViewData["Title"] = "Encounter Schedule";
 }
 
 <div class="container mt-4">
     <h2>Encounter Schedule</h2>
     <p>A comprehensive view of all patient visits and appointments.</p>
+    <!-- Link to create a new encounter -->
     <a asp-action="Create" class="btn btn-success mb-3">Log New Encounter</a>
 
     <table class="table table-striped table-hover mt-3">
+        <!-- Table header -->
         <thead class="table-dark">
             <tr>
                 <th>Date & Time</th>
@@ -19,15 +23,20 @@
             </tr>
         </thead>
         <tbody>
+            @* Loop through each encounter in the Model and display it as a table row. *@
             @foreach (var encounter in Model)
             {
                 <tr>
+                    @* Format the encounter date for readability. *@
                     <td>@encounter.EncounterDate.ToString("MMM dd, yyyy h:mm tt")</td>
                     
-                    <td>@encounter.Provider.FullName</td>
+                    @* Safely display the provider's full name. If it's null, show "N/A". *@
+                    <td>@(encounter.Provider?.FullName ?? "N/A")</td>
                     
-                    <td>@encounter.Patient.FullName</td>
+                    @* Safely display the patient's full name. *@
+                    <td>@(encounter.Patient?.FullName ?? "N/A")</td>
                     
+                    @* Display the chief complaint, or a default message if it's null. *@
                     <td>@(encounter.ChiefComplaint ?? "No complaint recorded")</td>
                 </tr>
             }

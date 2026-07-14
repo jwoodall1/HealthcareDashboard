@@ -1,49 +1,36 @@
-@* This view provides a form to create a new patient encounter. *@
 @model HealthcareDashboard.Models.Encounter
 
 @{
-    // Set the page title.
-    ViewData["Title"] = "Log Encounter";
+    ViewData["Title"] = "Edit Encounter";
 }
 
 <div class="container mt-4">
-    <h2>Log Patient Encounter</h2>
+    <h2>Edit Encounter Details</h2>
     <hr />
     <div class="row">
         <div class="col-md-6">
-            <!-- The form will post to the "Create" action on the EncountersController. -->
-            <form asp-action="Create">
-                <!-- This shows a summary of all model validation errors. -->
+            <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
 
-                <!-- Input for Encounter Date and Time -->
                 <div class="form-group mb-3">
                     <label asp-for="EncounterDate" class="control-label">Date and Time</label>
                     <input asp-for="EncounterDate" type="datetime-local" class="form-control" />
                     <span asp-validation-for="EncounterDate" class="text-danger"></span>
                 </div>
 
-                <!-- Dropdown to select the Attending Provider -->
                 <div class="form-group mb-3">
                     <label asp-for="ProviderId" class="control-label">Attending Provider</label>
-                    @* The list of providers is passed from the controller via ViewBag. *@
-                    <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.ProviderId">
-                        <option value="">-- Select a Provider --</option>
-                    </select>
+                    <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.ProviderId"></select>
                     <span asp-validation-for="ProviderId" class="text-danger"></span>
                 </div>
 
-                <!-- Dropdown to select the Patient -->
                 <div class="form-group mb-3">
                     <label asp-for="PatientId" class="control-label">Patient</label>
-                    @* The list of patients is passed from the controller via ViewBag. *@
-                    <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId">
-                        <option value="">-- Select a Patient --</option>
-                    </select>
+                    <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
                     <span asp-validation-for="PatientId" class="text-danger"></span>
                 </div>
 
-                <!-- Text area for the Chief Complaint -->
                 <div class="form-group mb-3">
                     <label asp-for="ChiefComplaint" class="control-label">Chief Complaint / Reason for Visit</label>
                     <textarea asp-for="ChiefComplaint" class="form-control" rows="3"></textarea>
@@ -51,8 +38,7 @@
                 </div>
 
                 <div class="form-group mt-4">
-                    <!-- Submit button to save the encounter and a cancel button to go back to the list. -->
-                    <input type="submit" value="Save Encounter" class="btn btn-primary" />
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
                     <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
                 </div>
             </form>

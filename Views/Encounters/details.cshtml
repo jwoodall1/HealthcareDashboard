@@ -1,0 +1,37 @@
+@* This view displays the details of a single encounter. *@
+@model HealthcareDashboard.Models.Encounter
+
+@{
+    // Set the page title.
+    ViewData["Title"] = "Encounter Details";
+}
+
+<div class="container mt-4">
+    <h2>Encounter Details</h2>
+    <hr />
+    <div>
+        @* Using a description list to display the encounter properties. *@
+        <dl class="row">
+            <dt class="col-sm-3">Date & Time</dt>
+            @* Format the date for better readability. *@
+            <dd class="col-sm-9">@Model.EncounterDate.ToString("MMM dd, yyyy h:mm tt")</dd>
+
+            <dt class="col-sm-3">Provider</dt>
+            @* Safely display the provider's name, showing "N/A" if it's null. *@
+            <dd class="col-sm-9">@(Model.Provider?.FullName ?? "N/A")</dd>
+
+            <dt class="col-sm-3">Patient</dt>
+            @* Safely display the patient's name. *@
+            <dd class="col-sm-9">@(Model.Patient?.FullName ?? "N/A")</dd>
+
+            <dt class="col-sm-3">Chief Complaint</dt>
+            @* Display the chief complaint or a default message if it's not available. *@
+            <dd class="col-sm-9">@(Model.ChiefComplaint ?? "No complaint recorded")</dd>
+        </dl>
+    </div>
+    <div class="mt-4">
+        @* Links to edit the current encounter or go back to the main list. *@
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </div>
+</div>

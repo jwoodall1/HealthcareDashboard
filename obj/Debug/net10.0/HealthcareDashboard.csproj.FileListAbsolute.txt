@@ -223,3 +223,4 @@
 /Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/obj/Debug/net10.0/compressed/htfl2b7nx7-{0}-sdegi1lswd-sdegi1lswd.gz
 /Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/obj/Debug/net10.0/compressed/ycc4uaxsjs-{0}-61n19gt1b8-61n19gt1b8.gz
 /Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/obj/Debug/net10.0/compressed/1mzeya3qf8-{0}-vzez6xg9ul-vzez6xg9ul.gz
+/Users/jonathanwoodall/Desktop/PracticeMVC/HealthcareDashboard/obj/Debug/net10.0/HealthcareDashboard.sourcelink.json

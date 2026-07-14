@@ -1,0 +1,41 @@
+@* This view shows a confirmation page before deleting an encounter. *@
+@model HealthcareDashboard.Models.Encounter
+
+@{
+    // Set the page title.
+    ViewData["Title"] = "Delete Encounter";
+}
+
+<div class="container mt-4">
+    <h2>Delete Encounter</h2>
+    <h3 class="text-danger">Are you sure you want to delete this encounter?</h3>
+    <hr />
+    <div>
+        @* Displaying the details of the encounter to be deleted for confirmation. *@
+        <dl class="row">
+            <dt class="col-sm-3">Patient</dt>
+            @* Safely display the patient's name. *@
+            <dd class="col-sm-9">@(Model.Patient?.FullName ?? "N/A")</dd>
+
+            <dt class="col-sm-3">Provider</dt>
+            @* Safely display the provider's name. *@
+            <dd class="col-sm-9">@(Model.Provider?.FullName ?? "N/A")</dd>
+
+            <dt class="col-sm-3">Date of Encounter</dt>
+            <dd class="col-sm-9">@Model.EncounterDate.ToString("MM/dd/yyyy")</dd>
+
+            <dt class="col-sm-3">Chief Complaint</dt>
+            @* Display the chief complaint or a default message. *@
+            <dd class="col-sm-9">@(Model.ChiefComplaint ?? "No complaint recorded")</dd>
+        </dl>
+
+        @* This form submits to the DeleteConfirmed action. *@
+        <form asp-action="Delete">
+            @* A hidden input to pass the ID of the encounter to be deleted. *@
+            <input type="hidden" asp-for="Id" />
+            @* The actual delete button and a cancel button to go back. *@
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+        </form>
+    </div>
+</div>

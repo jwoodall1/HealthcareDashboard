@@ -1,0 +1,30 @@
+@model HealthcareDashboard.Models.Provider
+
+@{
+    ViewData["Title"] = "Provider Details";
+}
+
+<div class="container mt-4">
+    <h2>Provider Details</h2>
+    <hr />
+    <div>
+        <h4>@Model.FullName</h4>
+        <dl class="row">
+            <dt class="col-sm-3">First Name</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+
+            <dt class="col-sm-3">Last Name</dt>
+            <dd class="col-sm-9">@Model.LastName</dd>
+
+            <dt class="col-sm-3">Specialty</dt>
+            <dd class="col-sm-9">@Model.Specialty</dd>
+
+            <dt class="col-sm-3">Phone Number</dt>
+            <dd class="col-sm-9">@(Model.PhoneNumber ?? "No number on file")</dd>
+        </dl>
+    </div>
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </div>
+</div>

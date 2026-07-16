@@ -16,28 +16,43 @@ namespace HealthcareDashboard.Controllers
         }
 
         // GET: /Encounters
+        // This action returns the main view that will host our calendar.
         public async Task<IActionResult> Index()
         {
-            // The Magic: We tell EF Core to "Include" the related models
-            // so they aren't null when we try to display them!
             var encounters = await _context.Encounters
                 .Include(e => e.Patient)
                 .Include(e => e.Provider)
+                .OrderByDescending(e => e.EncounterDate)
                 .ToListAsync();
-
             return View(encounters);
         }
 
+        // GET: /Encounters/GetEncounters
+        // This endpoint provides the encounter data in a JSON format that FullCalendar understands.
+        [HttpGet]
+        public async Task<IActionResult> GetEncounters()
+        {
+            var encounters = await _context.Encounters
+                .Include(e => e.Patient)
+                .Include(e => e.Provider)
+                .Select(e => new {
+                    id = e.Id,
+                    title = $"{e.Patient!.FullName ?? "N/A"} - {e.Provider!.FullName ?? "N/A"}",
+                    start = e.EncounterDate
+                })
+                .ToListAsync();
+            return Json(encounters);
+        }
+
+        // This action is no longer needed for the calendar view, but can be kept for other purposes.
         public IActionResult Create()
         {
-            // This creates the data for our dropdown menus!
-            // "Id" is the value saved to the database. "FullName" is what the user actually sees.
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName");
             ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "FullName");
             return View();
         }
 
-        // POST: /Encounters/Create
+        // POST: /Encounters/Create - This action is also not used by the new calendar interface.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Encounter encounter)
@@ -61,7 +76,8 @@ namespace HealthcareDashboard.Controllers
             return View(encounter);
         }
 
-        // GET: Encounters/Details/5
+        // GET: /Encounters/Details/5
+        // Returns a partial view with the details of a specific encounter.
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -78,28 +94,11 @@ namespace HealthcareDashboard.Controllers
                 return NotFound();
             }
 
-            return View(encounter);
+            return PartialView("_Details", encounter);
         }
 
-        // GET: Encounters/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var encounter = await _context.Encounters.FindAsync(id);
-            if (encounter == null)
-            {
-                return NotFound();
-            }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName", encounter.PatientId);
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "FullName", encounter.ProviderId);
-            return View(encounter);
-        }
-
-        // POST: Encounters/Edit/5
+        // POST: /Encounters/Edit/5
+        // Handles the submission of the edit form.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Encounter encounter)
@@ -109,6 +108,7 @@ namespace HealthcareDashboard.Controllers
                 return NotFound();
             }
             
+            // We must tell MVC to ignore the complex objects during validation for AJAX requests.
             ModelState.Remove("Patient");
             ModelState.Remove("Provider");
 
@@ -130,14 +130,58 @@ namespace HealthcareDashboard.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Json(new { success = true });
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName", encounter.PatientId);
             ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "FullName", encounter.ProviderId);
+            return PartialView("_Edit", encounter);
+        }
+
+        // POST: /Encounters/Delete/5
+        // Confirms and executes the deletion.
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var encounter = await _context.Encounters.FindAsync(id);
+            if (encounter == null)
+            {
+                return Json(new { success = false, message = "Encounter not found." });
+            }
+
+            _context.Encounters.Remove(encounter);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true });
+        }
+
+        // GET: /Encounters/Edit/5
+        // Returns a partial view with the form to edit an encounter.
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var encounter = await _context.Encounters.FindAsync(id);
+            if (encounter == null)
+            {
+                return NotFound();
+            }
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName", encounter.PatientId);
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "FullName", encounter.ProviderId);
+            
+            // Check if the request is from AJAX (for the modal) or a direct request
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", encounter);
+            }
+
             return View(encounter);
         }
 
-        // GET: Encounters/Delete/5
+        // GET: /Encounters/Delete/5
+        // Returns a partial view with the delete confirmation.
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,22 +198,13 @@ namespace HealthcareDashboard.Controllers
                 return NotFound();
             }
 
-            return View(encounter);
-        }
-
-        // POST: Encounters/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var encounter = await _context.Encounters.FindAsync(id);
-            if (encounter != null)
+            // Check if the request is from AJAX (for the modal) or a direct request
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                _context.Encounters.Remove(encounter);
-                await _context.SaveChangesAsync();
+                return PartialView("_Delete", encounter);
             }
-            
-            return RedirectToAction(nameof(Index));
+
+            return View(encounter);
         }
 
         private bool EncounterExists(int id)

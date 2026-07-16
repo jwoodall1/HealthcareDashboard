@@ -1,45 +1,146 @@
-@* This view displays a list of all patient encounters. *@
 @model IEnumerable<HealthcareDashboard.Models.Encounter>
 
 @{
-    // Set the page title.
-    ViewData["Title"] = "Encounter Schedule";
+    ViewData["Title"] = "Encounters";
 }
 
-<div class="container mt-4">
-    <h2>Encounter Schedule</h2>
-    <p>A comprehensive view of all patient visits and appointments.</p>
-    <!-- Link to create a new encounter -->
-    <a asp-action="Create" class="btn btn-success mb-3">Log New Encounter</a>
+@* Add CDN for FullCalendar *@
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
 
-    <table class="table table-striped table-hover mt-3">
-        <!-- Table header -->
-        <thead class="table-dark">
-            <tr>
-                <th>Date & Time</th>
-                <th>Provider</th>
-                <th>Patient</th>
-                <th>Chief Complaint</th>
-            </tr>
-        </thead>
-        <tbody>
-            @* Loop through each encounter in the Model and display it as a table row. *@
-            @foreach (var encounter in Model)
-            {
-                <tr>
-                    @* Format the encounter date for readability. *@
-                    <td>@encounter.EncounterDate.ToString("MMM dd, yyyy h:mm tt")</td>
-                    
-                    @* Safely display the provider's full name. If it's null, show "N/A". *@
-                    <td>@(encounter.Provider?.FullName ?? "N/A")</td>
-                    
-                    @* Safely display the patient's full name. *@
-                    <td>@(encounter.Patient?.FullName ?? "N/A")</td>
-                    
-                    @* Display the chief complaint, or a default message if it's null. *@
-                    <td>@(encounter.ChiefComplaint ?? "No complaint recorded")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<div id='calendar'></div>
+
+<hr class="my-4" />
+
+<h3>All Encounters</h3>
+@* Bootstrap Modal for Details/Edit/Delete *@
+<div class="modal fade" id="encounterModal" tabindex="-1" role="dialog" aria-labelledby="encounterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="encounterModalLabel">Encounter Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="encounterModalBody">
+                @* Content will be loaded here via AJAX *@
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Link to create a new encounter -->
+<a asp-action="Create" class="btn btn-success mb-3">Log New Encounter</a>
+
+<table class="table table-striped table-hover mt-3">
+    <!-- Table header -->
+    <thead class="table-dark">
+        <tr>
+            <th>Date & Time</th>
+            <th>Provider</th>
+            <th>Patient</th>
+            <th>Chief Complaint</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* Loop through each encounter in the Model and display it as a table row. *@
+        @foreach (var encounter in Model)
+        {
+            <tr>
+                @* Format the encounter date for readability. *@
+                <td>@encounter.EncounterDate.ToString("MMM dd, yyyy h:mm tt")</td>
+                
+                @* Safely display the provider's full name. If it's null, show "N/A". *@
+                <td>@(encounter.Provider?.FullName ?? "N/A")</td>
+                
+                @* Safely display the patient's full name. *@
+                <td>@(encounter.Patient?.FullName ?? "N/A")</td>
+                
+                @* Display the chief complaint, or a default message if it's null. *@
+                <td>@(encounter.ChiefComplaint ?? "No complaint recorded")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@encounter.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@encounter.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: '/Encounters/GetEncounters',
+                eventClick: function(info) {
+                    // Load details into modal when an event is clicked
+                    $('#encounterModalLabel').text('Encounter Details');
+                    $('#encounterModalBody').load('/Encounters/Details/' + info.event.id, function() {
+                        $('#encounterModal').modal('show');
+                    });
+                }
+            });
+            calendar.render();
+
+            // Use event delegation to handle clicks on buttons loaded into the modal
+
+            // Handle Edit button click
+            $('#encounterModalBody').on('click', '#editEncounterBtn', function() {
+                var encounterId = $(this).data('id');
+                $('#encounterModalLabel').text('Edit Encounter');
+                $('#encounterModalBody').load('/Encounters/Edit/' + encounterId);
+            });
+
+            // Handle Delete button click
+            $('#encounterModalBody').on('click', '#deleteEncounterBtn', function() {
+                var encounterId = $(this).data('id');
+                $('#encounterModalLabel').text('Delete Encounter');
+                $('#encounterModalBody').load('/Encounters/Delete/' + encounterId);
+            });
+
+            // Handle Edit form submission via AJAX
+            $('#encounterModalBody').on('submit', '#editEncounterForm', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(result) {
+                        if (result.success) {
+                            $('#encounterModal').modal('hide');
+                            calendar.refetchEvents(); // Refresh calendar events
+                        } else {
+                            // If the server returns the form with validation errors, display them
+                            $('#encounterModalBody').html(result);
+                        }
+                    }
+                });
+            });
+
+            // Handle Delete form submission via AJAX
+            $('#encounterModalBody').on('submit', '#deleteEncounterForm', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                $.post(form.attr('action'), form.serialize(), function(result) {
+                    if (result.success) {
+                        $('#encounterModal').modal('hide');
+                        calendar.refetchEvents(); // Refresh calendar events
+                    } else {
+                        alert(result.message || 'Error deleting encounter.');
+                    }
+                });
+            });
+        });
+    </script>
+}

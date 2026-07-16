@@ -1,0 +1,25 @@
+@model HealthcareDashboard.Models.Encounter
+
+<div>
+    <h4>Encounter Details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">Patient</dt>
+        <dd class="col-sm-8">@(Model.Patient?.FullName ?? "N/A")</dd>
+
+        <dt class="col-sm-4">Provider</dt>
+        <dd class="col-sm-8">@(Model.Provider?.FullName ?? "N/A")</dd>
+
+        <dt class="col-sm-4">Date of Encounter</dt>
+        <dd class="col-sm-8">@Model.EncounterDate.ToString("MM/dd/yyyy h:mm tt")</dd>
+
+        <dt class="col-sm-4">Chief Complaint</dt>
+        <dd class="col-sm-8">@(Model.ChiefComplaint ?? "No complaint recorded")</dd>
+    </dl>
+</div>
+<div class="modal-footer">
+    @* These buttons will trigger the AJAX calls to load the edit/delete forms *@
+    <button type="button" id="editEncounterBtn" class="btn btn-primary" data-id="@Model.Id">Edit</button>
+    <button type="button" id="deleteEncounterBtn" class="btn btn-danger" data-id="@Model.Id">Delete</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
